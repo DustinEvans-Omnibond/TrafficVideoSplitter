@@ -16,9 +16,8 @@ namespace TrafficVideoSplitter
     {
         private string videoFile;
 
-        enum DaytimeTypes { Day, Night };
-        enum ConditionTypes { Glare, Rain, Fog, Shaking, Distortion };
-        enum SplitTypes { SP, PE };
+        private enum DaytimeTypes { Day, Night };
+        private enum SplitTypes { SP, PE };
 
         public Form1()
         {
