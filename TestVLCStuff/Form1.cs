@@ -232,17 +232,15 @@ namespace TrafficVideoSplitter
 
         private void SplitVideo(string inputPath, string outputPath, double timePosition, SplitTypes splitType)
         {
-            string timeString = GetTimeString(timePosition);
+            string timeString = GetTimeStringForDisplay(timePosition);
 
             // Build command line arguments based on split type user selected, defaults to SplitTypes.SP
             string commandArgs = "/C ffmpeg -ss 00:00:00 -t " + timeString + " -i " + inputPath + " -c:v copy " + outputPath;
-            //string commandArgs = "/C ffmpeg -i " + inputPath + " -ss 00:00:00 -t " + timeString + " -c:v copy " + outputPath;
             if (splitType == SplitTypes.PE)
             {
-                //commandArgs = "/C ffmpeg -i " + inputPath + " -ss " + timeString + " -c:v copy " + outputPath;
                 commandArgs = "/C ffmpeg -ss " + timeString + " -i " + inputPath + " -c:v copy " + outputPath;
             }
-            
+            Console.WriteLine(commandArgs);
             // Do the split            
             Process.Start("cmd.exe", commandArgs);
         }
