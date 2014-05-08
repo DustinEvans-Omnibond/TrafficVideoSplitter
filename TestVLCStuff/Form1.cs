@@ -239,7 +239,7 @@ namespace TrafficVideoSplitter
             {
                 commandArgs = "/C ffmpeg -ss " + timeString + " -i " + inputPath + " -c:v copy " + outputPath;
             }
-            Console.WriteLine(commandArgs);
+            
             // Do the split            
             Process.Start("cmd.exe", commandArgs);
         }
