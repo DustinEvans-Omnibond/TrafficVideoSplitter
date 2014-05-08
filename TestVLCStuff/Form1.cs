@@ -78,10 +78,10 @@ namespace TrafficVideoSplitter
                 // Get and display time position
                 positionDisplay.Text = GetTimeStringForDisplay(axVLCPlugin.input.Time) + " / " + GetTimeStringForDisplay(axVLCPlugin.input.Length);
 
-                // Check if save location directory is correct 
-                if (saveLocationBox.Text != "")
+                // Check if save location directory path and military time is correct 
+                if ((saveLocationBox.Text != "") && CheckMilitaryTime())
                 {
-                    try 
+                    try
                     {
                         // Try to create the location directory
                         Directory.CreateDirectory(saveLocationBox.Text);
@@ -89,15 +89,19 @@ namespace TrafficVideoSplitter
                         // Build rest of output path directories
                         string outputFilename = BuildOutputFileName(hhBox.Text, mmBox.Text, ssBox.Text, axVLCPlugin.input.Time, (spRadioButton.Checked ? SplitTypes.SP : SplitTypes.PE), GetFileExtension(videoFile));
                         string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night));
-                        
+
                         // Split the video into two segments at the given time
                         // and save them in the output directory
                         SplitVideo(videoFile, outputPath, axVLCPlugin.input.Time, (spRadioButton.Checked ? SplitTypes.SP : SplitTypes.PE));
                     }
-                    catch(Exception ex) 
+                    catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
                     }
+                }
+                else
+                {
+                    MessageBox.Show("ERROR: Make sure that output directory and military time is correct!");
                 }
             }
             else
@@ -135,6 +139,20 @@ namespace TrafficVideoSplitter
             return interval.ToString();
         }
 
+        private bool CheckMilitaryTime()
+        {
+            bool correct = false;
+            try
+            {
+                correct = ((hhBox.Text != "" && mmBox.Text != "" && ssBox.Text != "") && (Int32.Parse(hhBox.Text) < 24 && Int32.Parse(hhBox.Text) >= 0) && (Int32.Parse(mmBox.Text) < 60 && Int32.Parse(mmBox.Text) >= 0) && (Int32.Parse(ssBox.Text) < 60 && Int32.Parse(ssBox.Text) >= 0));
+                return correct;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         private string GetFileExtension(string filepath)
         {
             string[] splitStrings = filepath.Split('.');
@@ -145,12 +163,12 @@ namespace TrafficVideoSplitter
 
         private string BuildOutputFileName(string milHours, string milMinutes, string milSeconds, double timePosition, SplitTypes splitType, string fileExtension)
         {
-            string timeString = milHours + milMinutes + milSeconds;
+            string timeString = "";
             if (splitType == SplitTypes.PE)
             {
                 // Add timePosition to military time
-                TimeSpan militaryStartTime = new TimeSpan(Int32.Parse(milHours), Int32.Parse(milMinutes), Int32.Parse(milSeconds)); 
-                TimeSpan positionTime = new TimeSpan(TimeSpan.FromMilliseconds(timePosition).Hours, TimeSpan.FromMilliseconds(timePosition).Minutes, TimeSpan.FromMilliseconds(timePosition).Seconds); 
+                TimeSpan militaryStartTime = new TimeSpan(Int32.Parse(milHours), Int32.Parse(milMinutes), Int32.Parse(milSeconds));
+                TimeSpan positionTime = new TimeSpan(TimeSpan.FromMilliseconds(timePosition).Hours, TimeSpan.FromMilliseconds(timePosition).Minutes, TimeSpan.FromMilliseconds(timePosition).Seconds);
                 TimeSpan addedTime = militaryStartTime.Add(positionTime);
 
                 // Parse time string
@@ -167,6 +185,19 @@ namespace TrafficVideoSplitter
                     seconds = "0" + seconds;
 
                 timeString = hours + minutes + seconds;
+            }
+            else
+            {
+                if (milHours.Length < 2)
+                    milHours = "0" + milHours;
+
+                if (milMinutes.Length < 2)
+                    milMinutes = "0" + milMinutes;
+
+                if (milSeconds.Length < 2)
+                    milSeconds = "0" + milSeconds;
+
+                timeString = milHours + milMinutes + milSeconds;
             }
             
             return timeString + fileExtension;
