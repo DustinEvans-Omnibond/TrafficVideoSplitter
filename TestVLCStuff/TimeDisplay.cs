@@ -28,6 +28,30 @@ namespace TrafficVideoSplitter
         {
             return time.ToString();
         }
+
+        public string ToString(char option)
+        {
+            string timeString = "";
+            switch (Char.ToUpper(option))
+            {
+                case 'C':
+                    string hours = time.Hours.ToString();
+                    string minutes = time.Minutes.ToString();
+                    string seconds = time.Seconds.ToString();
+                    if (hours.Length < 2) hours = "0" + hours;
+                    if (minutes.Length < 2) minutes = "0" + minutes;
+                    if (seconds.Length < 2) seconds = "0" + seconds;
+                    timeString = hours + minutes + seconds;
+                break;
+
+                default:
+                    timeString = this.ToString();
+                break;
+            }
+
+            return timeString;
+        }
+
         public TimeSpan GetTimeSpan()
         {
             return time;
