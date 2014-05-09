@@ -209,7 +209,7 @@ namespace TrafficVideoSplitter
                 dirString += "_Distortion";
             }
 
-            return dirString + "\\";
+            return (dirString == "" ? "" : dirString + "\\");
         }
 
         private void SplitVideo(string inputPath, string outputPath, TimeDisplay position, SplitTypes splitType)
