@@ -42,7 +42,7 @@ namespace TrafficVideoSplitter
 
         void axVLCPlugin_MediaPlayerTimeChanged(object sender, AxAXVLC.DVLCEvents_MediaPlayerTimeChangedEvent e)
         {
-            positionDisplay.Text = GetTimeStringForDisplay(axVLCPlugin.input.Time) + " / " + GetTimeStringForDisplay(axVLCPlugin.input.Length);
+            UpdatePositionDisplay(axVLCPlugin.input.Time, axVLCPlugin.input.Length);
         }
 
 
@@ -76,7 +76,7 @@ namespace TrafficVideoSplitter
                 axVLCPlugin.playlist.pause();
 
                 // Get and display time position
-                positionDisplay.Text = GetTimeStringForDisplay(axVLCPlugin.input.Time) + " / " + GetTimeStringForDisplay(axVLCPlugin.input.Length);
+                UpdatePositionDisplay(axVLCPlugin.input.Time, axVLCPlugin.input.Length);
 
                 // Check if save location directory path and military time is correct 
                 if ((saveLocationBox.Text != "") && CheckMilitaryTime())
@@ -87,12 +87,16 @@ namespace TrafficVideoSplitter
                         Directory.CreateDirectory(saveLocationBox.Text);
 
                         // Build rest of output path directories
-                        string outputFilename = BuildOutputFileName(hhBox.Text, mmBox.Text, ssBox.Text, axVLCPlugin.input.Time, (spRadioButton.Checked ? SplitTypes.SP : SplitTypes.PE), GetFileExtension(videoFile));
-                        string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night));
+                        TimeDisplay milTime = new TimeDisplay(hhBox.Text, mmBox.Text, ssBox.Text);
+                        TimeDisplay posTime = new TimeDisplay(axVLCPlugin.input.Time);
+                        SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : SplitTypes.PE);
 
+                        string outputFilename = BuildOutputFileName(milTime, posTime, splitType, GetFileExtension(videoFile));
+                        string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night));
+                        
                         // Split the video into two segments at the given time
                         // and save them in the output directory
-                        SplitVideo(videoFile, outputPath, axVLCPlugin.input.Time, (spRadioButton.Checked ? SplitTypes.SP : SplitTypes.PE));
+                        SplitVideo(videoFile, outputPath, posTime, splitType);
                     }
                     catch (Exception ex)
                     {
@@ -111,32 +115,11 @@ namespace TrafficVideoSplitter
             }
         }
 
-
-
-
-        private string GetTimeString(double time)
+        private void UpdatePositionDisplay(double msCurrentTime, double msTotalTime)
         {
-            string hours = TimeSpan.FromMilliseconds(time).Hours.ToString();
-            string minutes = TimeSpan.FromMilliseconds(time).Minutes.ToString();
-            string seconds = TimeSpan.FromMilliseconds(time).Seconds.ToString();
-
-            if (hours.Length < 2)
-                hours = "0" + hours;
-
-            if (minutes.Length < 2)
-                minutes = "0" + minutes;
-
-            if (seconds.Length < 2)
-                seconds = "0" + seconds;
-
-            return (hours + minutes + seconds);
-        }
-
-        private string GetTimeStringForDisplay(double time)
-        {
-            TimeSpan interval = new TimeSpan(TimeSpan.FromMilliseconds(time).Hours, TimeSpan.FromMilliseconds(time).Minutes, TimeSpan.FromMilliseconds(time).Seconds);
-
-            return interval.ToString();
+            TimeDisplay current = new TimeDisplay(msCurrentTime);
+            TimeDisplay total = new TimeDisplay(msTotalTime);
+            positionDisplay.Text = current.ToString() + " / " + total.ToString();
         }
 
         private bool CheckMilitaryTime()
@@ -161,46 +144,15 @@ namespace TrafficVideoSplitter
             return "." + splitStrings[splitStrings.Length - 1];
         }
 
-        private string BuildOutputFileName(string milHours, string milMinutes, string milSeconds, double timePosition, SplitTypes splitType, string fileExtension)
+        private string BuildOutputFileName(TimeDisplay militaryTime, TimeDisplay currentTime, SplitTypes splitType, string fileExtension)
         {
-            string timeString = "";
             if (splitType == SplitTypes.PE)
             {
-                // Add timePosition to military time
-                TimeSpan militaryStartTime = new TimeSpan(Int32.Parse(milHours), Int32.Parse(milMinutes), Int32.Parse(milSeconds));
-                TimeSpan positionTime = new TimeSpan(TimeSpan.FromMilliseconds(timePosition).Hours, TimeSpan.FromMilliseconds(timePosition).Minutes, TimeSpan.FromMilliseconds(timePosition).Seconds);
-                TimeSpan addedTime = militaryStartTime.Add(positionTime);
-
-                // Parse time string
-                string hours = addedTime.Hours.ToString();
-                string minutes = addedTime.Minutes.ToString();
-                string seconds = addedTime.Seconds.ToString();
-                if (hours.Length < 2)
-                    hours = "0" + hours;
-
-                if (minutes.Length < 2)
-                    minutes = "0" + minutes;
-
-                if (seconds.Length < 2)
-                    seconds = "0" + seconds;
-
-                timeString = hours + minutes + seconds;
+                TimeDisplay total = militaryTime + currentTime;
+                return total.ToString('C') + fileExtension;
             }
-            else
-            {
-                if (milHours.Length < 2)
-                    milHours = "0" + milHours;
 
-                if (milMinutes.Length < 2)
-                    milMinutes = "0" + milMinutes;
-
-                if (milSeconds.Length < 2)
-                    milSeconds = "0" + milSeconds;
-
-                timeString = milHours + milMinutes + milSeconds;
-            }
-            
-            return timeString + fileExtension;
+            return militaryTime.ToString('C') + fileExtension;
         }
 
         private string BuildOutputPath(string mainDirectory, string outputFilename, DaytimeTypes daytimeType)
@@ -260,17 +212,15 @@ namespace TrafficVideoSplitter
             return dirString + "\\";
         }
 
-        private void SplitVideo(string inputPath, string outputPath, double timePosition, SplitTypes splitType)
+        private void SplitVideo(string inputPath, string outputPath, TimeDisplay position, SplitTypes splitType)
         {
-            string timeString = GetTimeStringForDisplay(timePosition);
-
             // Build command line arguments based on split type user selected, defaults to SplitTypes.SP
-            string commandArgs = "/C ffmpeg -ss 00:00:00 -t " + timeString + " -i " + inputPath + " -c:v copy " + outputPath;
+            string commandArgs = "/C ffmpeg -ss 00:00:00 -t " + position.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
             if (splitType == SplitTypes.PE)
             {
-                commandArgs = "/C ffmpeg -ss " + timeString + " -i " + inputPath + " -c:v copy " + outputPath;
+                commandArgs = "/C ffmpeg -ss " + position.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
             }
-            
+
             // Do the split            
             Process.Start("cmd.exe", commandArgs);
         }

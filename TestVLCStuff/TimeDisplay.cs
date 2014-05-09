@@ -24,6 +24,16 @@ namespace TrafficVideoSplitter
             time = ts;
         }
 
+        public TimeDisplay(int hours, int minutes, int seconds)
+        {
+            time = new TimeSpan(hours, minutes, seconds);
+        }
+
+        public TimeDisplay(string hours, string minutes, string seconds)
+        {
+            time = new TimeSpan(Int32.Parse(hours), Int32.Parse(minutes), Int32.Parse(seconds));
+        }
+
         public override string ToString()
         {
             return time.ToString();
