@@ -132,7 +132,7 @@
             // 
             this.splitButton.BackColor = System.Drawing.Color.GreenYellow;
             this.splitButton.ForeColor = System.Drawing.Color.Black;
-            this.splitButton.Location = new System.Drawing.Point(383, 155);
+            this.splitButton.Location = new System.Drawing.Point(570, 762);
             this.splitButton.Name = "splitButton";
             this.splitButton.Size = new System.Drawing.Size(75, 23);
             this.splitButton.TabIndex = 11;
@@ -210,7 +210,7 @@
             this.groupBox1.Controls.Add(this.glareCheckBox);
             this.groupBox1.Location = new System.Drawing.Point(132, 19);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(326, 53);
+            this.groupBox1.Size = new System.Drawing.Size(356, 53);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Conditions";
@@ -301,15 +301,12 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.groupBox8);
-            this.groupBox3.Controls.Add(this.groupBox5);
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Controls.Add(this.groupBox1);
-            this.groupBox3.Controls.Add(this.splitButton);
             this.groupBox3.Location = new System.Drawing.Point(12, 641);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(469, 205);
+            this.groupBox3.Size = new System.Drawing.Size(498, 144);
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Split Options";
@@ -317,9 +314,9 @@
             // groupBox5
             // 
             this.groupBox5.Controls.Add(this.positionDisplay);
-            this.groupBox5.Location = new System.Drawing.Point(139, 137);
+            this.groupBox5.Location = new System.Drawing.Point(526, 603);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(119, 53);
+            this.groupBox5.Size = new System.Drawing.Size(127, 53);
             this.groupBox5.TabIndex = 22;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Current Position";
@@ -331,7 +328,7 @@
             this.groupBox4.Controls.Add(this.spRadioButton);
             this.groupBox4.Location = new System.Drawing.Point(6, 78);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(452, 53);
+            this.groupBox4.Size = new System.Drawing.Size(482, 53);
             this.groupBox4.TabIndex = 21;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Split Type";
@@ -339,12 +336,12 @@
             // peRadioButton
             // 
             this.peRadioButton.AutoSize = true;
-            this.peRadioButton.Location = new System.Drawing.Point(126, 19);
+            this.peRadioButton.Location = new System.Drawing.Point(148, 19);
             this.peRadioButton.Name = "peRadioButton";
-            this.peRadioButton.Size = new System.Drawing.Size(96, 17);
+            this.peRadioButton.Size = new System.Drawing.Size(133, 17);
             this.peRadioButton.TabIndex = 1;
             this.peRadioButton.TabStop = true;
-            this.peRadioButton.Text = "Position to End";
+            this.peRadioButton.Text = "Current Position to End";
             this.peRadioButton.UseVisualStyleBackColor = true;
             // 
             // spRadioButton
@@ -353,10 +350,10 @@
             this.spRadioButton.Checked = true;
             this.spRadioButton.Location = new System.Drawing.Point(6, 19);
             this.spRadioButton.Name = "spRadioButton";
-            this.spRadioButton.Size = new System.Drawing.Size(99, 17);
+            this.spRadioButton.Size = new System.Drawing.Size(136, 17);
             this.spRadioButton.TabIndex = 0;
             this.spRadioButton.TabStop = true;
-            this.spRadioButton.Text = "Start to Position";
+            this.spRadioButton.Text = "Start to Current Position";
             this.spRadioButton.UseVisualStyleBackColor = true;
             // 
             // groupBox6
@@ -372,7 +369,7 @@
             this.groupBox6.Controls.Add(this.mmBox);
             this.groupBox6.Location = new System.Drawing.Point(12, 544);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(469, 91);
+            this.groupBox6.Size = new System.Drawing.Size(498, 91);
             this.groupBox6.TabIndex = 22;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Save Options";
@@ -382,7 +379,7 @@
             this.groupBox7.Controls.Add(this.fileDisplay);
             this.groupBox7.Location = new System.Drawing.Point(93, 498);
             this.groupBox7.Name = "groupBox7";
-            this.groupBox7.Size = new System.Drawing.Size(388, 40);
+            this.groupBox7.Size = new System.Drawing.Size(417, 40);
             this.groupBox7.TabIndex = 23;
             this.groupBox7.TabStop = false;
             this.groupBox7.Text = "File";
@@ -400,7 +397,7 @@
             // groupBox8
             // 
             this.groupBox8.Controls.Add(this.markedDisplay);
-            this.groupBox8.Location = new System.Drawing.Point(6, 137);
+            this.groupBox8.Location = new System.Drawing.Point(526, 544);
             this.groupBox8.Name = "groupBox8";
             this.groupBox8.Size = new System.Drawing.Size(127, 53);
             this.groupBox8.TabIndex = 23;
@@ -419,20 +416,23 @@
             // mpRadioButton
             // 
             this.mpRadioButton.AutoSize = true;
-            this.mpRadioButton.Location = new System.Drawing.Point(244, 19);
+            this.mpRadioButton.Location = new System.Drawing.Point(287, 19);
             this.mpRadioButton.Name = "mpRadioButton";
-            this.mpRadioButton.Size = new System.Drawing.Size(113, 17);
+            this.mpRadioButton.Size = new System.Drawing.Size(190, 17);
             this.mpRadioButton.TabIndex = 2;
             this.mpRadioButton.TabStop = true;
-            this.mpRadioButton.Text = "Marked to Position";
+            this.mpRadioButton.Text = "Marked Position to Current Position";
             this.mpRadioButton.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 858);
+            this.ClientSize = new System.Drawing.Size(665, 800);
+            this.Controls.Add(this.groupBox5);
+            this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.markButton);
+            this.Controls.Add(this.splitButton);
             this.Controls.Add(this.groupBox7);
             this.Controls.Add(this.groupBox6);
             this.Controls.Add(this.groupBox3);
