@@ -15,13 +15,15 @@ namespace TrafficVideoSplitter
     public partial class Form1 : Form
     {
         private string videoFile;
+        private TimeDisplay markedPosition;
 
         private enum DaytimeTypes { Day, Night };
-        private enum SplitTypes { SP, PE };
+        private enum SplitTypes { SP, PE, MP };
 
         public Form1()
         {
             videoFile = "";
+            markedPosition = new TimeDisplay(0);
 
             InitializeComponent();
         }
@@ -63,7 +65,21 @@ namespace TrafficVideoSplitter
                 
                 // Add video file to playlist and start playing
                 axVLCPlugin.playlist.add("file:///" + videoFile);
+                UpdateMarkedDisplay(0, axVLCPlugin.input.Length);
+                UpdatePositionDisplay(0, axVLCPlugin.input.Length);
                 axVLCPlugin.playlist.playItem(0);
+            }
+        }
+
+        private void markButton_Click(object sender, EventArgs e)
+        {
+            if ((videoFile != "") && (axVLCPlugin.playlist.items.count > 0))
+            {
+                // Pause the video
+                axVLCPlugin.playlist.pause();
+
+                // Update the marked position display and stored variable
+                UpdateMarkedDisplay(axVLCPlugin.input.Time, axVLCPlugin.input.Length);
             }
         }
 
@@ -89,14 +105,14 @@ namespace TrafficVideoSplitter
                         // Build rest of output path directories
                         TimeDisplay milTime = new TimeDisplay(hhBox.Text, mmBox.Text, ssBox.Text);
                         TimeDisplay posTime = new TimeDisplay(axVLCPlugin.input.Time);
-                        SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : SplitTypes.PE);
-
-                        string outputFilename = BuildOutputFileName(milTime, posTime, splitType, GetFileExtension(videoFile));
+                        SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : (peRadioButton.Checked ? SplitTypes.PE : SplitTypes.MP));
+                                                
+                        string outputFilename = BuildOutputFileName(milTime, markedPosition, posTime, splitType, GetFileExtension(videoFile));
                         string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night));
                         
                         // Split the video into two segments at the given time
                         // and save them in the output directory
-                        SplitVideo(videoFile, outputPath, posTime, splitType);
+                        SplitVideo(videoFile, outputPath, markedPosition, posTime, splitType);
                     }
                     catch (Exception ex)
                     {
@@ -113,6 +129,13 @@ namespace TrafficVideoSplitter
                 // Error
                 MessageBox.Show("ERROR: Must have a video file loaded!");
             }
+        }
+
+        private void UpdateMarkedDisplay(double msCurrentTime, double msTotalTime)
+        {
+            markedPosition = new TimeDisplay(msCurrentTime);
+            TimeDisplay total = new TimeDisplay(msTotalTime);
+            markedDisplay.Text = markedPosition.ToString() + " / " + total.ToString();
         }
 
         private void UpdatePositionDisplay(double msCurrentTime, double msTotalTime)
@@ -144,12 +167,25 @@ namespace TrafficVideoSplitter
             return "." + splitStrings[splitStrings.Length - 1];
         }
 
-        private string BuildOutputFileName(TimeDisplay militaryTime, TimeDisplay currentTime, SplitTypes splitType, string fileExtension)
-        {
+        private string BuildOutputFileName(TimeDisplay militaryTime, TimeDisplay markedTime, TimeDisplay currentTime, SplitTypes splitType, string fileExtension)
+        {            
             if (splitType == SplitTypes.PE)
             {
                 TimeDisplay total = militaryTime + currentTime;
                 return total.ToString('C') + fileExtension;
+            }
+            else if (splitType == SplitTypes.MP)
+            {
+                if (currentTime.Compare(markedTime) >= 0)
+                {
+                    TimeDisplay markedTotal = militaryTime + markedTime;
+                    return markedTotal.ToString('C') + fileExtension;
+                }
+                else
+                {
+                    TimeDisplay currentTotal = militaryTime + currentTime;
+                    return currentTotal.ToString('C') + fileExtension;
+                }
             }
 
             return militaryTime.ToString('C') + fileExtension;
@@ -212,17 +248,41 @@ namespace TrafficVideoSplitter
             return (dirString == "" ? "" : dirString + "\\");
         }
 
-        private void SplitVideo(string inputPath, string outputPath, TimeDisplay position, SplitTypes splitType)
+        private void SplitVideo(string inputPath, string outputPath, TimeDisplay markedPos, TimeDisplay position, SplitTypes splitType)
         {
             // Build command line arguments based on split type user selected, defaults to SplitTypes.SP
-            string commandArgs = "/C ffmpeg -ss 00:00:00 -t " + position.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
-            if (splitType == SplitTypes.PE)
+            string commandArgs = "";
+            switch (splitType)
             {
-                commandArgs = "/C ffmpeg -ss " + position.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
+                case SplitTypes.SP:
+                    commandArgs = "/C ffmpeg -ss 00:00:00 -t " + position.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
+                break;
+
+                case SplitTypes.PE:
+                    commandArgs = "/C ffmpeg -ss " + position.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
+                break;
+
+                case SplitTypes.MP:
+                    if (position.Compare(markedPos) >= 0)
+                    {
+                        commandArgs = "/C ffmpeg -i " + inputPath + " -ss " + markedPos.ToString() + " -to " + position.ToString() + " -c:v copy " + outputPath;
+                    }
+                    else
+                    {
+                        // Switch the marked and postion times since the marked position it greater than the current position
+                        commandArgs = "/C ffmpeg -i " + inputPath + " -ss " + position.ToString() + " -to " + markedPos.ToString() + " -c:v copy " + outputPath;
+                    }
+                break;
+
+                default:
+                    commandArgs = "/C ffmpeg -ss 00:00:00 -t " + position.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
+                break;
             }
 
             // Do the split            
             Process.Start("cmd.exe", commandArgs);
         }
+
+       
     }
 }

@@ -80,5 +80,10 @@ namespace TrafficVideoSplitter
 
             return new TimeDisplay(combined);
         }
+
+        public int Compare(TimeDisplay other)
+        {
+            return time.CompareTo(other.GetTimeSpan());
+        }
     }
 }
