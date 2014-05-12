@@ -14,8 +14,10 @@ namespace TrafficVideoSplitter
 {
     public partial class Form1 : Form
     {
+        private string logFilename = "TrafficVideoSplitterLog.txt";
         private string videoFile;
         private TimeDisplay markedPosition;
+
 
         private enum DaytimeTypes { Day, Night };
         private enum SplitTypes { SP, PE, MP };
@@ -113,6 +115,7 @@ namespace TrafficVideoSplitter
                         // Split the video into two segments at the given time
                         // and save them in the output directory
                         SplitVideo(videoFile, outputPath, markedPosition, posTime, splitType);
+                        WriteToLog(saveLocationBox.Text, videoFile, outputPath);
                     }
                     catch (Exception ex)
                     {
@@ -200,7 +203,8 @@ namespace TrafficVideoSplitter
             }
 
             // Add daytimeType (Day\, Night\) to main directory
-            mainDirectory += (daytimeType == DaytimeTypes.Day ? "Day\\" : "Night\\");
+            mainDirectory += (daytimeType == DaytimeTypes.Day ? "Day" : "Night");
+            mainDirectory += viewTextBox.Text + "\\";
 
             // Create next directory given conditions
             mainDirectory += BuildConditionsDirectory();
@@ -281,6 +285,25 @@ namespace TrafficVideoSplitter
 
             // Do the split            
             Process.Start("cmd.exe", commandArgs);
+        }
+
+        private void WriteToLog(string directory, string inputPath, string outputPath)
+        {
+            try
+            {
+                // Check if mainDirectory has a \ at the end of it
+                if (directory.IndexOf('\\', directory.Length - 1) < 0)
+                {
+                    directory += "\\";
+                }
+
+                StreamWriter file = File.AppendText(directory + logFilename); //new StreamWriter(directory + logFilename);
+                file.WriteLine("Input: " + inputPath);
+                file.WriteLine("Output: " + outputPath);
+                file.WriteLine("-------------------------------------------------------");
+                file.Close();
+            }
+            catch { }
         }
 
        

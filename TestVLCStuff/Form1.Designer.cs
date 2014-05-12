@@ -63,6 +63,8 @@
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.markedDisplay = new System.Windows.Forms.Label();
             this.mpRadioButton = new System.Windows.Forms.RadioButton();
+            this.label1 = new System.Windows.Forms.Label();
+            this.viewTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -132,7 +134,7 @@
             // 
             this.splitButton.BackColor = System.Drawing.Color.GreenYellow;
             this.splitButton.ForeColor = System.Drawing.Color.Black;
-            this.splitButton.Location = new System.Drawing.Point(570, 762);
+            this.splitButton.Location = new System.Drawing.Point(577, 794);
             this.splitButton.Name = "splitButton";
             this.splitButton.Size = new System.Drawing.Size(75, 23);
             this.splitButton.TabIndex = 11;
@@ -143,7 +145,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(6, 58);
+            this.label3.Location = new System.Drawing.Point(5, 57);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(107, 13);
             this.label3.TabIndex = 12;
@@ -304,7 +306,7 @@
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Controls.Add(this.groupBox1);
-            this.groupBox3.Location = new System.Drawing.Point(12, 641);
+            this.groupBox3.Location = new System.Drawing.Point(12, 673);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(498, 144);
             this.groupBox3.TabIndex = 21;
@@ -358,6 +360,8 @@
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.viewTextBox);
+            this.groupBox6.Controls.Add(this.label1);
             this.groupBox6.Controls.Add(this.label2);
             this.groupBox6.Controls.Add(this.saveLocationBox);
             this.groupBox6.Controls.Add(this.label6);
@@ -369,7 +373,7 @@
             this.groupBox6.Controls.Add(this.mmBox);
             this.groupBox6.Location = new System.Drawing.Point(12, 544);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(498, 91);
+            this.groupBox6.Size = new System.Drawing.Size(498, 112);
             this.groupBox6.TabIndex = 22;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Save Options";
@@ -424,11 +428,27 @@
             this.mpRadioButton.Text = "Marked Position to Current Position";
             this.mpRadioButton.UseVisualStyleBackColor = true;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(5, 86);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(77, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "View Indicator:";
+            // 
+            // viewTextBox
+            // 
+            this.viewTextBox.Location = new System.Drawing.Point(125, 82);
+            this.viewTextBox.Name = "viewTextBox";
+            this.viewTextBox.Size = new System.Drawing.Size(138, 20);
+            this.viewTextBox.TabIndex = 20;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 800);
+            this.ClientSize = new System.Drawing.Size(665, 829);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.markButton);
@@ -500,6 +520,8 @@
         private System.Windows.Forms.GroupBox groupBox8;
         private System.Windows.Forms.Label markedDisplay;
         private System.Windows.Forms.RadioButton mpRadioButton;
+        private System.Windows.Forms.TextBox viewTextBox;
+        private System.Windows.Forms.Label label1;
     }
 }
 
