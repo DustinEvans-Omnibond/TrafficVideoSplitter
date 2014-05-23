@@ -118,7 +118,7 @@ namespace TrafficVideoSplitter
                 UpdatePositionDisplay(axVLCPlugin.input.Time, axVLCPlugin.input.Length);
 
                 // Check if save location directory path and military time is correct 
-                if ((saveLocationBox.Text != "") && CheckMilitaryTime())
+                if ((saveLocationBox.Text != "") && CheckStartingDateTime())
                 {
                     try
                     {
@@ -176,12 +176,18 @@ namespace TrafficVideoSplitter
             positionDisplay.Text = current.ToString() + " / " + total.ToString();
         }
 
-        private bool CheckMilitaryTime()
+        private bool CheckStartingDateTime()
         {
             bool correct = false;
             try
             {
-                correct = ((hhBox.Text != "" && mmBox.Text != "" && ssBox.Text != "") && (Int32.Parse(hhBox.Text) < 24 && Int32.Parse(hhBox.Text) >= 0) && (Int32.Parse(mmBox.Text) < 60 && Int32.Parse(mmBox.Text) >= 0) && (Int32.Parse(ssBox.Text) < 60 && Int32.Parse(ssBox.Text) >= 0));
+                int year = Int32.Parse(yearTextBox.Text);
+                int month = Int32.Parse(monthTextBox.Text);
+                int day = Int32.Parse(dayTextBox.Text);
+                int hours = Int32.Parse(hhBox.Text);
+                int minutes = Int32.Parse(mmBox.Text);
+                int seconds = Int32.Parse(ssBox.Text);
+                correct = ((hhBox.Text != "" && mmBox.Text != "" && ssBox.Text != "") && (yearTextBox.Text != "" && monthTextBox.Text != "" && dayTextBox.Text != "") && (year < 10000 && year > 0) && (month < 13 && month > 0) && (day < 32 && day > 0) && (hours < 24 && hours >= 0) && (minutes < 60 && minutes >= 0) && (seconds < 60 && seconds >= 0));
                 return correct;
             }
             catch (Exception ex)
