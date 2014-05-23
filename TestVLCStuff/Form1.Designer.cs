@@ -53,27 +53,38 @@
             this.nightRadioButton = new System.Windows.Forms.RadioButton();
             this.dayRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.mpRadioButton = new System.Windows.Forms.RadioButton();
             this.peRadioButton = new System.Windows.Forms.RadioButton();
             this.spRadioButton = new System.Windows.Forms.RadioButton();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.dayTextBox = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.monthTextBox = new System.Windows.Forms.TextBox();
+            this.monthLabel = new System.Windows.Forms.Label();
+            this.yearTextBox = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.viewTextBox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox7 = new System.Windows.Forms.GroupBox();
             this.markButton = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.markedDisplay = new System.Windows.Forms.Label();
-            this.mpRadioButton = new System.Windows.Forms.RadioButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.viewTextBox = new System.Windows.Forms.TextBox();
+            this.formatCheckBox = new System.Windows.Forms.CheckBox();
+            this.groupBox9 = new System.Windows.Forms.GroupBox();
+            this.outputFileLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.groupBox8.SuspendLayout();
+            this.groupBox9.SuspendLayout();
             this.SuspendLayout();
             // 
             // axVLCPlugin
@@ -87,7 +98,7 @@
             // 
             // openButton
             // 
-            this.openButton.Location = new System.Drawing.Point(12, 504);
+            this.openButton.Location = new System.Drawing.Point(12, 509);
             this.openButton.Name = "openButton";
             this.openButton.Size = new System.Drawing.Size(75, 23);
             this.openButton.TabIndex = 3;
@@ -116,7 +127,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(5, 27);
+            this.label2.Location = new System.Drawing.Point(6, 49);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(115, 13);
             this.label2.TabIndex = 9;
@@ -124,17 +135,18 @@
             // 
             // saveLocationBox
             // 
-            this.saveLocationBox.Location = new System.Drawing.Point(125, 24);
+            this.saveLocationBox.Location = new System.Drawing.Point(126, 46);
             this.saveLocationBox.Name = "saveLocationBox";
             this.saveLocationBox.Size = new System.Drawing.Size(333, 20);
             this.saveLocationBox.TabIndex = 10;
             this.saveLocationBox.Text = "C:\\my_output_save_location";
+            this.saveLocationBox.TextChanged += new System.EventHandler(this.saveLocationBox_TextChanged);
             // 
             // splitButton
             // 
             this.splitButton.BackColor = System.Drawing.Color.GreenYellow;
             this.splitButton.ForeColor = System.Drawing.Color.Black;
-            this.splitButton.Location = new System.Drawing.Point(577, 794);
+            this.splitButton.Location = new System.Drawing.Point(578, 918);
             this.splitButton.Name = "splitButton";
             this.splitButton.Size = new System.Drawing.Size(75, 23);
             this.splitButton.TabIndex = 11;
@@ -145,7 +157,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(5, 57);
+            this.label3.Location = new System.Drawing.Point(6, 146);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(107, 13);
             this.label3.TabIndex = 12;
@@ -153,16 +165,17 @@
             // 
             // hhBox
             // 
-            this.hhBox.Location = new System.Drawing.Point(158, 54);
+            this.hhBox.Location = new System.Drawing.Point(126, 143);
             this.hhBox.Name = "hhBox";
-            this.hhBox.Size = new System.Drawing.Size(33, 20);
+            this.hhBox.Size = new System.Drawing.Size(50, 20);
             this.hhBox.TabIndex = 13;
             this.hhBox.Text = "00";
+            this.hhBox.TextChanged += new System.EventHandler(this.hhBox_TextChanged);
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(123, 57);
+            this.label4.Location = new System.Drawing.Point(129, 127);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 13);
             this.label4.TabIndex = 14;
@@ -170,16 +183,17 @@
             // 
             // mmBox
             // 
-            this.mmBox.Location = new System.Drawing.Point(230, 54);
+            this.mmBox.Location = new System.Drawing.Point(181, 143);
             this.mmBox.Name = "mmBox";
-            this.mmBox.Size = new System.Drawing.Size(33, 20);
+            this.mmBox.Size = new System.Drawing.Size(51, 20);
             this.mmBox.TabIndex = 15;
             this.mmBox.Text = "00";
+            this.mmBox.TextChanged += new System.EventHandler(this.mmBox_TextChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(197, 57);
+            this.label5.Location = new System.Drawing.Point(190, 127);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(31, 13);
             this.label5.TabIndex = 16;
@@ -187,16 +201,17 @@
             // 
             // ssBox
             // 
-            this.ssBox.Location = new System.Drawing.Point(302, 55);
+            this.ssBox.Location = new System.Drawing.Point(239, 143);
             this.ssBox.Name = "ssBox";
-            this.ssBox.Size = new System.Drawing.Size(33, 20);
+            this.ssBox.Size = new System.Drawing.Size(48, 20);
             this.ssBox.TabIndex = 17;
             this.ssBox.Text = "00";
+            this.ssBox.TextChanged += new System.EventHandler(this.ssBox_TextChanged);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(269, 57);
+            this.label6.Location = new System.Drawing.Point(247, 127);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(27, 13);
             this.label6.TabIndex = 18;
@@ -226,6 +241,7 @@
             this.fogCheckBox.TabIndex = 4;
             this.fogCheckBox.Text = "Fog";
             this.fogCheckBox.UseVisualStyleBackColor = true;
+            this.fogCheckBox.CheckedChanged += new System.EventHandler(this.fogCheckBox_CheckedChanged);
             // 
             // distortionCheckBox
             // 
@@ -236,6 +252,7 @@
             this.distortionCheckBox.TabIndex = 3;
             this.distortionCheckBox.Text = "Distortion";
             this.distortionCheckBox.UseVisualStyleBackColor = true;
+            this.distortionCheckBox.CheckedChanged += new System.EventHandler(this.distortionCheckBox_CheckedChanged);
             // 
             // shakeCheckBox
             // 
@@ -246,6 +263,7 @@
             this.shakeCheckBox.TabIndex = 2;
             this.shakeCheckBox.Text = "Shaking";
             this.shakeCheckBox.UseVisualStyleBackColor = true;
+            this.shakeCheckBox.CheckedChanged += new System.EventHandler(this.shakeCheckBox_CheckedChanged);
             // 
             // rainCheckBox
             // 
@@ -256,6 +274,7 @@
             this.rainCheckBox.TabIndex = 1;
             this.rainCheckBox.Text = "Rain";
             this.rainCheckBox.UseVisualStyleBackColor = true;
+            this.rainCheckBox.CheckedChanged += new System.EventHandler(this.rainCheckBox_CheckedChanged);
             // 
             // glareCheckBox
             // 
@@ -266,6 +285,7 @@
             this.glareCheckBox.TabIndex = 0;
             this.glareCheckBox.Text = "Glare";
             this.glareCheckBox.UseVisualStyleBackColor = true;
+            this.glareCheckBox.CheckedChanged += new System.EventHandler(this.glareCheckBox_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -288,6 +308,7 @@
             this.nightRadioButton.TabStop = true;
             this.nightRadioButton.Text = "Night";
             this.nightRadioButton.UseVisualStyleBackColor = true;
+            this.nightRadioButton.CheckedChanged += new System.EventHandler(this.nightRadioButton_CheckedChanged);
             // 
             // dayRadioButton
             // 
@@ -300,28 +321,19 @@
             this.dayRadioButton.TabStop = true;
             this.dayRadioButton.Text = "Day";
             this.dayRadioButton.UseVisualStyleBackColor = true;
+            this.dayRadioButton.CheckedChanged += new System.EventHandler(this.dayRadioButton_CheckedChanged);
             // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.groupBox4);
             this.groupBox3.Controls.Add(this.groupBox2);
             this.groupBox3.Controls.Add(this.groupBox1);
-            this.groupBox3.Location = new System.Drawing.Point(12, 673);
+            this.groupBox3.Location = new System.Drawing.Point(12, 754);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(498, 144);
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Split Options";
-            // 
-            // groupBox5
-            // 
-            this.groupBox5.Controls.Add(this.positionDisplay);
-            this.groupBox5.Location = new System.Drawing.Point(526, 603);
-            this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(127, 53);
-            this.groupBox5.TabIndex = 22;
-            this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Current Position";
             // 
             // groupBox4
             // 
@@ -335,6 +347,18 @@
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Split Type";
             // 
+            // mpRadioButton
+            // 
+            this.mpRadioButton.AutoSize = true;
+            this.mpRadioButton.Location = new System.Drawing.Point(287, 19);
+            this.mpRadioButton.Name = "mpRadioButton";
+            this.mpRadioButton.Size = new System.Drawing.Size(190, 17);
+            this.mpRadioButton.TabIndex = 2;
+            this.mpRadioButton.TabStop = true;
+            this.mpRadioButton.Text = "Marked Position to Current Position";
+            this.mpRadioButton.UseVisualStyleBackColor = true;
+            this.mpRadioButton.CheckedChanged += new System.EventHandler(this.mpRadioButton_CheckedChanged);
+            // 
             // peRadioButton
             // 
             this.peRadioButton.AutoSize = true;
@@ -345,6 +369,7 @@
             this.peRadioButton.TabStop = true;
             this.peRadioButton.Text = "Current Position to End";
             this.peRadioButton.UseVisualStyleBackColor = true;
+            this.peRadioButton.CheckedChanged += new System.EventHandler(this.peRadioButton_CheckedChanged);
             // 
             // spRadioButton
             // 
@@ -357,9 +382,28 @@
             this.spRadioButton.TabStop = true;
             this.spRadioButton.Text = "Start to Current Position";
             this.spRadioButton.UseVisualStyleBackColor = true;
+            this.spRadioButton.CheckedChanged += new System.EventHandler(this.spRadioButton_CheckedChanged);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.positionDisplay);
+            this.groupBox5.Location = new System.Drawing.Point(526, 603);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(127, 53);
+            this.groupBox5.TabIndex = 22;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "Current Position";
             // 
             // groupBox6
             // 
+            this.groupBox6.Controls.Add(this.formatCheckBox);
+            this.groupBox6.Controls.Add(this.dayTextBox);
+            this.groupBox6.Controls.Add(this.label9);
+            this.groupBox6.Controls.Add(this.monthTextBox);
+            this.groupBox6.Controls.Add(this.monthLabel);
+            this.groupBox6.Controls.Add(this.yearTextBox);
+            this.groupBox6.Controls.Add(this.label8);
+            this.groupBox6.Controls.Add(this.label7);
             this.groupBox6.Controls.Add(this.viewTextBox);
             this.groupBox6.Controls.Add(this.label1);
             this.groupBox6.Controls.Add(this.label2);
@@ -373,10 +417,87 @@
             this.groupBox6.Controls.Add(this.mmBox);
             this.groupBox6.Location = new System.Drawing.Point(12, 544);
             this.groupBox6.Name = "groupBox6";
-            this.groupBox6.Size = new System.Drawing.Size(498, 112);
+            this.groupBox6.Size = new System.Drawing.Size(498, 204);
             this.groupBox6.TabIndex = 22;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Save Options";
+            // 
+            // dayTextBox
+            // 
+            this.dayTextBox.Location = new System.Drawing.Point(238, 99);
+            this.dayTextBox.Name = "dayTextBox";
+            this.dayTextBox.Size = new System.Drawing.Size(50, 20);
+            this.dayTextBox.TabIndex = 27;
+            this.dayTextBox.TextChanged += new System.EventHandler(this.dayTextBox_TextChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(245, 80);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(29, 13);
+            this.label9.TabIndex = 26;
+            this.label9.Text = "(DD)";
+            // 
+            // monthTextBox
+            // 
+            this.monthTextBox.Location = new System.Drawing.Point(182, 99);
+            this.monthTextBox.Name = "monthTextBox";
+            this.monthTextBox.Size = new System.Drawing.Size(50, 20);
+            this.monthTextBox.TabIndex = 25;
+            this.monthTextBox.TextChanged += new System.EventHandler(this.monthTextBox_TextChanged);
+            // 
+            // monthLabel
+            // 
+            this.monthLabel.AutoSize = true;
+            this.monthLabel.Location = new System.Drawing.Point(190, 80);
+            this.monthLabel.Name = "monthLabel";
+            this.monthLabel.Size = new System.Drawing.Size(31, 13);
+            this.monthLabel.TabIndex = 24;
+            this.monthLabel.Text = "(MM)";
+            // 
+            // yearTextBox
+            // 
+            this.yearTextBox.Location = new System.Drawing.Point(126, 99);
+            this.yearTextBox.Name = "yearTextBox";
+            this.yearTextBox.Size = new System.Drawing.Size(50, 20);
+            this.yearTextBox.TabIndex = 23;
+            this.yearTextBox.TextChanged += new System.EventHandler(this.yearTextBox_TextChanged);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(129, 80);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(41, 13);
+            this.label8.TabIndex = 22;
+            this.label8.Text = "(YYYY)";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 99);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(72, 13);
+            this.label7.TabIndex = 21;
+            this.label7.Text = "Starting Date:";
+            // 
+            // viewTextBox
+            // 
+            this.viewTextBox.Location = new System.Drawing.Point(126, 176);
+            this.viewTextBox.Name = "viewTextBox";
+            this.viewTextBox.Size = new System.Drawing.Size(162, 20);
+            this.viewTextBox.TabIndex = 20;
+            this.viewTextBox.TextChanged += new System.EventHandler(this.viewTextBox_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 180);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(77, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "View Indicator:";
             // 
             // groupBox7
             // 
@@ -386,7 +507,7 @@
             this.groupBox7.Size = new System.Drawing.Size(417, 40);
             this.groupBox7.TabIndex = 23;
             this.groupBox7.TabStop = false;
-            this.groupBox7.Text = "File";
+            this.groupBox7.Text = "Input File";
             // 
             // markButton
             // 
@@ -417,38 +538,42 @@
             this.markedDisplay.TabIndex = 0;
             this.markedDisplay.Text = "N/A";
             // 
-            // mpRadioButton
+            // formatCheckBox
             // 
-            this.mpRadioButton.AutoSize = true;
-            this.mpRadioButton.Location = new System.Drawing.Point(287, 19);
-            this.mpRadioButton.Name = "mpRadioButton";
-            this.mpRadioButton.Size = new System.Drawing.Size(190, 17);
-            this.mpRadioButton.TabIndex = 2;
-            this.mpRadioButton.TabStop = true;
-            this.mpRadioButton.Text = "Marked Position to Current Position";
-            this.mpRadioButton.UseVisualStyleBackColor = true;
+            this.formatCheckBox.AutoSize = true;
+            this.formatCheckBox.Location = new System.Drawing.Point(9, 22);
+            this.formatCheckBox.Name = "formatCheckBox";
+            this.formatCheckBox.Size = new System.Drawing.Size(228, 17);
+            this.formatCheckBox.TabIndex = 28;
+            this.formatCheckBox.Text = "Input file in YYYYMMDD_HHMMSS format";
+            this.formatCheckBox.UseVisualStyleBackColor = true;
+            this.formatCheckBox.CheckedChanged += new System.EventHandler(this.formatCheckBox_CheckedChanged);
             // 
-            // label1
+            // groupBox9
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(5, 86);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(77, 13);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "View Indicator:";
+            this.groupBox9.Controls.Add(this.outputFileLabel);
+            this.groupBox9.Location = new System.Drawing.Point(12, 904);
+            this.groupBox9.Name = "groupBox9";
+            this.groupBox9.Size = new System.Drawing.Size(496, 37);
+            this.groupBox9.TabIndex = 25;
+            this.groupBox9.TabStop = false;
+            this.groupBox9.Text = "Output File";
             // 
-            // viewTextBox
+            // outputFileLabel
             // 
-            this.viewTextBox.Location = new System.Drawing.Point(125, 82);
-            this.viewTextBox.Name = "viewTextBox";
-            this.viewTextBox.Size = new System.Drawing.Size(138, 20);
-            this.viewTextBox.TabIndex = 20;
+            this.outputFileLabel.AutoSize = true;
+            this.outputFileLabel.Location = new System.Drawing.Point(7, 16);
+            this.outputFileLabel.Name = "outputFileLabel";
+            this.outputFileLabel.Size = new System.Drawing.Size(27, 13);
+            this.outputFileLabel.TabIndex = 0;
+            this.outputFileLabel.Text = "N/A";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 829);
+            this.ClientSize = new System.Drawing.Size(665, 952);
+            this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox8);
             this.Controls.Add(this.markButton);
@@ -468,16 +593,18 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
-            this.groupBox5.ResumeLayout(false);
-            this.groupBox5.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this.groupBox7.ResumeLayout(false);
             this.groupBox7.PerformLayout();
             this.groupBox8.ResumeLayout(false);
             this.groupBox8.PerformLayout();
+            this.groupBox9.ResumeLayout(false);
+            this.groupBox9.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -522,6 +649,16 @@
         private System.Windows.Forms.RadioButton mpRadioButton;
         private System.Windows.Forms.TextBox viewTextBox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox dayTextBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.TextBox monthTextBox;
+        private System.Windows.Forms.Label monthLabel;
+        private System.Windows.Forms.TextBox yearTextBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox formatCheckBox;
+        private System.Windows.Forms.GroupBox groupBox9;
+        private System.Windows.Forms.Label outputFileLabel;
     }
 }
 

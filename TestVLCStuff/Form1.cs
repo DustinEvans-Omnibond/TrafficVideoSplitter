@@ -35,7 +35,16 @@ namespace TrafficVideoSplitter
             axVLCPlugin.playlist.items.clear();
             
             axVLCPlugin.MediaPlayerTimeChanged += new AxAXVLC.DVLCEvents_MediaPlayerTimeChangedEventHandler(axVLCPlugin_MediaPlayerTimeChanged);
-        }
+            axVLCPlugin.MediaPlayerPaused += new EventHandler(axVLCPlugin_MediaPlayerPaused);
+            // Set default values for starting date and time
+            DateTime current = DateTime.Now;
+            yearTextBox.Text = current.ToString("yyyy");
+            monthTextBox.Text = current.ToString("MM");
+            dayTextBox.Text = current.ToString("dd");
+            hhBox.Text = current.ToString("hh");
+            mmBox.Text = current.ToString("mm");
+            ssBox.Text = current.ToString("ss");
+        }      
         
         void Form1_FormClosing(object sender, System.Windows.Forms.FormClosingEventArgs e)
         {
@@ -49,7 +58,10 @@ namespace TrafficVideoSplitter
             UpdatePositionDisplay(axVLCPlugin.input.Time, axVLCPlugin.input.Length);
         }
 
-
+        void axVLCPlugin_MediaPlayerPaused(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
 
 
         private void openButton_Click(object sender, EventArgs e)
@@ -70,6 +82,13 @@ namespace TrafficVideoSplitter
                 UpdateMarkedDisplay(0, axVLCPlugin.input.Length);
                 UpdatePositionDisplay(0, axVLCPlugin.input.Length);
                 axVLCPlugin.playlist.playItem(0);
+                
+                if (formatCheckBox.Checked)
+                {
+                    ParseDateTime(videoFile);
+                }
+
+                UpdateOuputFilePathLabel();
             }
         }
 
@@ -82,6 +101,8 @@ namespace TrafficVideoSplitter
 
                 // Update the marked position display and stored variable
                 UpdateMarkedDisplay(axVLCPlugin.input.Time, axVLCPlugin.input.Length);
+
+                UpdateOuputFilePathLabel();
             }
         }
 
@@ -105,12 +126,19 @@ namespace TrafficVideoSplitter
                         Directory.CreateDirectory(saveLocationBox.Text);
 
                         // Build rest of output path directories
-                        TimeDisplay milTime = new TimeDisplay(hhBox.Text, mmBox.Text, ssBox.Text);
+                        int year = Int32.Parse(yearTextBox.Text);
+                        int month = Int32.Parse(monthTextBox.Text);
+                        int day = Int32.Parse(dayTextBox.Text);
+                        int hours = Int32.Parse(hhBox.Text);
+                        int minutes = Int32.Parse(mmBox.Text);
+                        int seconds = Int32.Parse(ssBox.Text);
+                        DateTime startingDateTime = new DateTime(year, month, day, hours, minutes, seconds);
+                        
                         TimeDisplay posTime = new TimeDisplay(axVLCPlugin.input.Time);
                         SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : (peRadioButton.Checked ? SplitTypes.PE : SplitTypes.MP));
-                                                
-                        string outputFilename = BuildOutputFileName(milTime, markedPosition, posTime, splitType, GetFileExtension(videoFile));
-                        string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night));
+
+                        string outputFilename = BuildOutputFileName(startingDateTime, markedPosition.GetTimeSpan(), posTime.GetTimeSpan(), splitType, GetFileExtension(videoFile));
+                        string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night), true);
                         
                         // Split the video into two segments at the given time
                         // and save them in the output directory
@@ -124,7 +152,7 @@ namespace TrafficVideoSplitter
                 }
                 else
                 {
-                    MessageBox.Show("ERROR: Make sure that output directory and military time is correct!");
+                    MessageBox.Show("ERROR: Make sure that output directory and starting date/time is correct!");
                 }
             }
             else
@@ -170,31 +198,32 @@ namespace TrafficVideoSplitter
             return "." + splitStrings[splitStrings.Length - 1];
         }
 
-        private string BuildOutputFileName(TimeDisplay militaryTime, TimeDisplay markedTime, TimeDisplay currentTime, SplitTypes splitType, string fileExtension)
-        {            
+        private string BuildOutputFileName(DateTime startingTime, TimeSpan markedPos, TimeSpan currentPos, SplitTypes splitType, string fileExtension)
+        {
             if (splitType == SplitTypes.PE)
             {
-                TimeDisplay total = militaryTime + currentTime;
-                return total.ToString('C') + fileExtension;
+                DateTime total = startingTime.Add(currentPos);
+                return total.ToString("yyyyMMdd_hhmmss") + fileExtension;
             }
             else if (splitType == SplitTypes.MP)
             {
-                if (currentTime.Compare(markedTime) >= 0)
+                TimeSpan compareTimeSpan = new TimeSpan(startingTime.Hour, startingTime.Minute, startingTime.Second);
+                if (compareTimeSpan.CompareTo(markedPos) >= 0)
                 {
-                    TimeDisplay markedTotal = militaryTime + markedTime;
-                    return markedTotal.ToString('C') + fileExtension;
+                    DateTime total = startingTime.Add(markedPos);
+                    return total.ToString("yyyyMMdd_hhmmss") + fileExtension;
                 }
                 else
                 {
-                    TimeDisplay currentTotal = militaryTime + currentTime;
-                    return currentTotal.ToString('C') + fileExtension;
+                    DateTime total = startingTime.Add(currentPos);
+                    return total.ToString("yyyyMMdd_hhmmss") + fileExtension;
                 }
             }
 
-            return militaryTime.ToString('C') + fileExtension;
+            return startingTime.ToString("yyyyMMdd_hhmmss") + fileExtension;
         }
-
-        private string BuildOutputPath(string mainDirectory, string outputFilename, DaytimeTypes daytimeType)
+        
+        private string BuildOutputPath(string mainDirectory, string outputFilename, DaytimeTypes daytimeType, bool makeDirectory)
         {
             // Check if mainDirectory has a \ at the end of it
             if (mainDirectory.IndexOf('\\', mainDirectory.Length - 1) < 0)
@@ -209,9 +238,12 @@ namespace TrafficVideoSplitter
             // Create next directory given conditions
             mainDirectory += BuildConditionsDirectory();
 
-            // Create the actual directory
-            try { Directory.CreateDirectory(mainDirectory); }
-            catch { }
+            // Create the actual directory if needed
+            if (makeDirectory)
+            {
+                try { Directory.CreateDirectory(mainDirectory); }
+                catch { }
+            }
 
             // Add outputFilename
             mainDirectory += outputFilename;
@@ -297,7 +329,7 @@ namespace TrafficVideoSplitter
                     directory += "\\";
                 }
 
-                StreamWriter file = File.AppendText(directory + logFilename); //new StreamWriter(directory + logFilename);
+                StreamWriter file = File.AppendText(directory + logFilename);
                 file.WriteLine("Input: " + inputPath);
                 file.WriteLine("Output: " + outputPath);
                 file.WriteLine("-------------------------------------------------------");
@@ -305,6 +337,164 @@ namespace TrafficVideoSplitter
             }
             catch { }
         }
+
+        private void ParseDateTime(string filepath)
+        {
+            try
+            {
+                // Get the filename from the directory filepath
+                string[] sFilepath = filepath.Split('\\');
+                string filename = sFilepath[sFilepath.Length - 1].Split('.')[0];
+                
+                // Parse the date/time from the filename and put it in the text boxes
+                string date = filename.Split('_')[0];
+                string time = filename.Split('_')[1];
+                
+                string year = date.Substring(0, 4);
+                string month = date.Substring(4, 2);
+                string day = date.Substring(6, 2);
+
+                string hours = time.Substring(0, 2);
+                string minutes = time.Substring(2, 2);
+                string seconds = time.Substring(4, 2);
+
+                yearTextBox.Text = year;
+                monthTextBox.Text = month;
+                dayTextBox.Text = day;
+                hhBox.Text = hours;
+                mmBox.Text = minutes;
+                ssBox.Text = seconds;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Couldn't parse the date or time!");
+            }
+        }
+
+
+        private void UpdateOuputFilePathLabel()
+        {
+            try
+            {
+                // Build rest of output path directories
+                int year = Int32.Parse(yearTextBox.Text);
+                int month = Int32.Parse(monthTextBox.Text);
+                int day = Int32.Parse(dayTextBox.Text);
+                int hours = Int32.Parse(hhBox.Text);
+                int minutes = Int32.Parse(mmBox.Text);
+                int seconds = Int32.Parse(ssBox.Text);
+                DateTime startingDateTime = new DateTime(year, month, day, hours, minutes, seconds);
+
+                TimeDisplay posTime = new TimeDisplay(axVLCPlugin.input.Time);
+                SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : (peRadioButton.Checked ? SplitTypes.PE : SplitTypes.MP));
+
+                string outputFilename = BuildOutputFileName(startingDateTime, markedPosition.GetTimeSpan(), posTime.GetTimeSpan(), splitType, GetFileExtension(videoFile));
+                string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night), false);
+
+                outputFileLabel.Text = outputPath;
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+
+        private void formatCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void saveLocationBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void yearTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void monthTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void dayTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void hhBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void mmBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void ssBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void viewTextBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void dayRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void nightRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void glareCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void rainCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void fogCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void shakeCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void distortionCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void spRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void peRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        private void mpRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            UpdateOuputFilePathLabel();
+        }
+
+        
 
        
     }

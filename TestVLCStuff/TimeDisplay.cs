@@ -45,6 +45,7 @@ namespace TrafficVideoSplitter
             switch (Char.ToUpper(option))
             {
                 case 'C':
+                    /*
                     string hours = time.Hours.ToString();
                     string minutes = time.Minutes.ToString();
                     string seconds = time.Seconds.ToString();
@@ -52,6 +53,8 @@ namespace TrafficVideoSplitter
                     if (minutes.Length < 2) minutes = "0" + minutes;
                     if (seconds.Length < 2) seconds = "0" + seconds;
                     timeString = hours + minutes + seconds;
+                     * */
+                    timeString = time.ToString("hhmmss");
                 break;
 
                 default:
