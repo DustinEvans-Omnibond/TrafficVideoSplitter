@@ -59,6 +59,7 @@
             this.spRadioButton = new System.Windows.Forms.RadioButton();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.formatCheckBox = new System.Windows.Forms.CheckBox();
             this.dayTextBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.monthTextBox = new System.Windows.Forms.TextBox();
@@ -72,9 +73,9 @@
             this.markButton = new System.Windows.Forms.Button();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
             this.markedDisplay = new System.Windows.Forms.Label();
-            this.formatCheckBox = new System.Windows.Forms.CheckBox();
             this.groupBox9 = new System.Windows.Forms.GroupBox();
             this.outputFileLabel = new System.Windows.Forms.Label();
+            this.smRadioButton = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.axVLCPlugin)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -93,7 +94,7 @@
             this.axVLCPlugin.Location = new System.Drawing.Point(12, 12);
             this.axVLCPlugin.Name = "axVLCPlugin";
             this.axVLCPlugin.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("axVLCPlugin.OcxState")));
-            this.axVLCPlugin.Size = new System.Drawing.Size(640, 480);
+            this.axVLCPlugin.Size = new System.Drawing.Size(639, 480);
             this.axVLCPlugin.TabIndex = 0;
             // 
             // openButton
@@ -146,7 +147,7 @@
             // 
             this.splitButton.BackColor = System.Drawing.Color.GreenYellow;
             this.splitButton.ForeColor = System.Drawing.Color.Black;
-            this.splitButton.Location = new System.Drawing.Point(578, 918);
+            this.splitButton.Location = new System.Drawing.Point(578, 927);
             this.splitButton.Name = "splitButton";
             this.splitButton.Size = new System.Drawing.Size(75, 23);
             this.splitButton.TabIndex = 11;
@@ -330,19 +331,20 @@
             this.groupBox3.Controls.Add(this.groupBox1);
             this.groupBox3.Location = new System.Drawing.Point(12, 754);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(498, 144);
+            this.groupBox3.Size = new System.Drawing.Size(498, 153);
             this.groupBox3.TabIndex = 21;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Split Options";
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.smRadioButton);
             this.groupBox4.Controls.Add(this.mpRadioButton);
             this.groupBox4.Controls.Add(this.peRadioButton);
             this.groupBox4.Controls.Add(this.spRadioButton);
             this.groupBox4.Location = new System.Drawing.Point(6, 78);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(482, 53);
+            this.groupBox4.Size = new System.Drawing.Size(482, 68);
             this.groupBox4.TabIndex = 21;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Split Type";
@@ -350,7 +352,7 @@
             // mpRadioButton
             // 
             this.mpRadioButton.AutoSize = true;
-            this.mpRadioButton.Location = new System.Drawing.Point(287, 19);
+            this.mpRadioButton.Location = new System.Drawing.Point(6, 42);
             this.mpRadioButton.Name = "mpRadioButton";
             this.mpRadioButton.Size = new System.Drawing.Size(190, 17);
             this.mpRadioButton.TabIndex = 2;
@@ -362,7 +364,7 @@
             // peRadioButton
             // 
             this.peRadioButton.AutoSize = true;
-            this.peRadioButton.Location = new System.Drawing.Point(148, 19);
+            this.peRadioButton.Location = new System.Drawing.Point(338, 42);
             this.peRadioButton.Name = "peRadioButton";
             this.peRadioButton.Size = new System.Drawing.Size(133, 17);
             this.peRadioButton.TabIndex = 1;
@@ -421,6 +423,17 @@
             this.groupBox6.TabIndex = 22;
             this.groupBox6.TabStop = false;
             this.groupBox6.Text = "Save Options";
+            // 
+            // formatCheckBox
+            // 
+            this.formatCheckBox.AutoSize = true;
+            this.formatCheckBox.Location = new System.Drawing.Point(9, 22);
+            this.formatCheckBox.Name = "formatCheckBox";
+            this.formatCheckBox.Size = new System.Drawing.Size(228, 17);
+            this.formatCheckBox.TabIndex = 28;
+            this.formatCheckBox.Text = "Input file in YYYYMMDD_HHMMSS format";
+            this.formatCheckBox.UseVisualStyleBackColor = true;
+            this.formatCheckBox.CheckedChanged += new System.EventHandler(this.formatCheckBox_CheckedChanged);
             // 
             // dayTextBox
             // 
@@ -538,21 +551,10 @@
             this.markedDisplay.TabIndex = 0;
             this.markedDisplay.Text = "N/A";
             // 
-            // formatCheckBox
-            // 
-            this.formatCheckBox.AutoSize = true;
-            this.formatCheckBox.Location = new System.Drawing.Point(9, 22);
-            this.formatCheckBox.Name = "formatCheckBox";
-            this.formatCheckBox.Size = new System.Drawing.Size(228, 17);
-            this.formatCheckBox.TabIndex = 28;
-            this.formatCheckBox.Text = "Input file in YYYYMMDD_HHMMSS format";
-            this.formatCheckBox.UseVisualStyleBackColor = true;
-            this.formatCheckBox.CheckedChanged += new System.EventHandler(this.formatCheckBox_CheckedChanged);
-            // 
             // groupBox9
             // 
             this.groupBox9.Controls.Add(this.outputFileLabel);
-            this.groupBox9.Location = new System.Drawing.Point(12, 904);
+            this.groupBox9.Location = new System.Drawing.Point(12, 913);
             this.groupBox9.Name = "groupBox9";
             this.groupBox9.Size = new System.Drawing.Size(496, 37);
             this.groupBox9.TabIndex = 25;
@@ -568,11 +570,22 @@
             this.outputFileLabel.TabIndex = 0;
             this.outputFileLabel.Text = "N/A";
             // 
+            // smRadioButton
+            // 
+            this.smRadioButton.AutoSize = true;
+            this.smRadioButton.Location = new System.Drawing.Point(338, 19);
+            this.smRadioButton.Name = "smRadioButton";
+            this.smRadioButton.Size = new System.Drawing.Size(138, 17);
+            this.smRadioButton.TabIndex = 3;
+            this.smRadioButton.TabStop = true;
+            this.smRadioButton.Text = "Start to Marked Position";
+            this.smRadioButton.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(665, 952);
+            this.ClientSize = new System.Drawing.Size(665, 961);
             this.Controls.Add(this.groupBox9);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.groupBox8);
@@ -659,6 +672,7 @@
         private System.Windows.Forms.CheckBox formatCheckBox;
         private System.Windows.Forms.GroupBox groupBox9;
         private System.Windows.Forms.Label outputFileLabel;
+        private System.Windows.Forms.RadioButton smRadioButton;
     }
 }
 

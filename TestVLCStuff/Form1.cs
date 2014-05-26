@@ -20,7 +20,7 @@ namespace TrafficVideoSplitter
 
 
         private enum DaytimeTypes { Day, Night };
-        private enum SplitTypes { SP, PE, MP };
+        private enum SplitTypes { SP, PE, MP, SM };
 
         public Form1()
         {
@@ -36,6 +36,7 @@ namespace TrafficVideoSplitter
             
             axVLCPlugin.MediaPlayerTimeChanged += new AxAXVLC.DVLCEvents_MediaPlayerTimeChangedEventHandler(axVLCPlugin_MediaPlayerTimeChanged);
             axVLCPlugin.MediaPlayerPaused += new EventHandler(axVLCPlugin_MediaPlayerPaused);
+
             // Set default values for starting date and time
             DateTime current = DateTime.Now;
             yearTextBox.Text = current.ToString("yyyy");
@@ -135,7 +136,7 @@ namespace TrafficVideoSplitter
                         DateTime startingDateTime = new DateTime(year, month, day, hours, minutes, seconds);
                         
                         TimeDisplay posTime = new TimeDisplay(axVLCPlugin.input.Time);
-                        SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : (peRadioButton.Checked ? SplitTypes.PE : SplitTypes.MP));
+                        SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : (peRadioButton.Checked ? SplitTypes.PE : (mpRadioButton.Checked ? SplitTypes.MP : SplitTypes.SM)));
 
                         string outputFilename = BuildOutputFileName(startingDateTime, markedPosition.GetTimeSpan(), posTime.GetTimeSpan(), splitType, GetFileExtension(videoFile));
                         string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night), true);
@@ -188,6 +189,7 @@ namespace TrafficVideoSplitter
                 int minutes = Int32.Parse(mmBox.Text);
                 int seconds = Int32.Parse(ssBox.Text);
                 correct = ((hhBox.Text != "" && mmBox.Text != "" && ssBox.Text != "") && (yearTextBox.Text != "" && monthTextBox.Text != "" && dayTextBox.Text != "") && (year < 10000 && year > 0) && (month < 13 && month > 0) && (day < 32 && day > 0) && (hours < 24 && hours >= 0) && (minutes < 60 && minutes >= 0) && (seconds < 60 && seconds >= 0));
+               
                 return correct;
             }
             catch (Exception ex)
@@ -316,6 +318,10 @@ namespace TrafficVideoSplitter
                     }
                 break;
 
+                case SplitTypes.SM:
+                    commandArgs = "/C ffmpeg -ss 00:00:00 -t " + markedPos.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
+                break;
+
                 default:
                     commandArgs = "/C ffmpeg -ss 00:00:00 -t " + position.ToString() + " -i " + inputPath + " -c:v copy " + outputPath;
                 break;
@@ -392,7 +398,7 @@ namespace TrafficVideoSplitter
                 DateTime startingDateTime = new DateTime(year, month, day, hours, minutes, seconds);
                 
                 TimeDisplay posTime = new TimeDisplay(axVLCPlugin.input.Time);
-                SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : (peRadioButton.Checked ? SplitTypes.PE : SplitTypes.MP));
+                SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : (peRadioButton.Checked ? SplitTypes.PE : (mpRadioButton.Checked ? SplitTypes.MP : SplitTypes.SM)));
 
                 string outputFilename = BuildOutputFileName(startingDateTime, markedPosition.GetTimeSpan(), posTime.GetTimeSpan(), splitType, GetFileExtension(videoFile));
                 string outputPath = BuildOutputPath(saveLocationBox.Text, outputFilename, (dayRadioButton.Checked ? DaytimeTypes.Day : DaytimeTypes.Night), false);
