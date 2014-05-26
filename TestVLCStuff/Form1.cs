@@ -41,7 +41,7 @@ namespace TrafficVideoSplitter
             yearTextBox.Text = current.ToString("yyyy");
             monthTextBox.Text = current.ToString("MM");
             dayTextBox.Text = current.ToString("dd");
-            hhBox.Text = current.ToString("hh");
+            hhBox.Text = current.ToString("HH");
             mmBox.Text = current.ToString("mm");
             ssBox.Text = current.ToString("ss");
         }      
@@ -209,7 +209,7 @@ namespace TrafficVideoSplitter
             if (splitType == SplitTypes.PE)
             {
                 DateTime total = startingTime.Add(currentPos);
-                return total.ToString("yyyyMMdd_hhmmss") + fileExtension;
+                return total.ToString("yyyyMMdd_HHmmss") + fileExtension;
             }
             else if (splitType == SplitTypes.MP)
             {
@@ -217,16 +217,16 @@ namespace TrafficVideoSplitter
                 if (compareTimeSpan.CompareTo(markedPos) >= 0)
                 {
                     DateTime total = startingTime.Add(markedPos);
-                    return total.ToString("yyyyMMdd_hhmmss") + fileExtension;
+                    return total.ToString("yyyyMMdd_HHmmss") + fileExtension;
                 }
                 else
                 {
                     DateTime total = startingTime.Add(currentPos);
-                    return total.ToString("yyyyMMdd_hhmmss") + fileExtension;
+                    return total.ToString("yyyyMMdd_HHmmss") + fileExtension;
                 }
             }
 
-            return startingTime.ToString("yyyyMMdd_hhmmss") + fileExtension;
+            return startingTime.ToString("yyyyMMdd_HHmmss") + fileExtension;
         }
         
         private string BuildOutputPath(string mainDirectory, string outputFilename, DaytimeTypes daytimeType, bool makeDirectory)
@@ -363,12 +363,12 @@ namespace TrafficVideoSplitter
                 string hours = time.Substring(0, 2);
                 string minutes = time.Substring(2, 2);
                 string seconds = time.Substring(4, 2);
-
-                yearTextBox.Text = year;
-                monthTextBox.Text = month;
+                
+                yearTextBox.Text = year; 
+                monthTextBox.Text = month; 
                 dayTextBox.Text = day;
-                hhBox.Text = hours;
-                mmBox.Text = minutes;
+                hhBox.Text = hours; 
+                mmBox.Text = minutes; 
                 ssBox.Text = seconds;
             }
             catch (Exception ex)
@@ -386,11 +386,11 @@ namespace TrafficVideoSplitter
                 int year = Int32.Parse(yearTextBox.Text);
                 int month = Int32.Parse(monthTextBox.Text);
                 int day = Int32.Parse(dayTextBox.Text);
-                int hours = Int32.Parse(hhBox.Text);
+                int hours = Int32.Parse(hhBox.Text); 
                 int minutes = Int32.Parse(mmBox.Text);
                 int seconds = Int32.Parse(ssBox.Text);
                 DateTime startingDateTime = new DateTime(year, month, day, hours, minutes, seconds);
-
+                
                 TimeDisplay posTime = new TimeDisplay(axVLCPlugin.input.Time);
                 SplitTypes splitType = (spRadioButton.Checked ? SplitTypes.SP : (peRadioButton.Checked ? SplitTypes.PE : SplitTypes.MP));
 
